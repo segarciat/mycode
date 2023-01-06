@@ -9,7 +9,11 @@ def welcome():
 def prompt_guest_count():
     """Ask how many guests will be eating at the diner"""
     while True:
-        n = input("How many guests will be joining us today? ")
+        try:
+            n = input("How many guests will be joining us today? ")
+        except EOFError:
+            print("\nPlease come again!")
+            exit()
         if not n.isnumeric():
             print("Sir, we request you give us a number")
         elif int(n) <= 0:
@@ -21,10 +25,14 @@ def prompt_for_drink():
     """Prompts guest for drink of choice"""
     while True:
         display_options()
-        option = input("\nWhat would you like? ").upper()
-        for drink in DRINKS:
-            if option == drink or drink.startswith(option):
-                return drink
+        try:
+            option = input("\nWhat would you like? ").upper()
+            for drink in DRINKS:
+                if option == drink or drink.startswith(option):
+                    return drink
+        except EOFError:
+            print("\nPlease come back!")
+            exit()
 
 def display_options():
     print("These are our drink options: ")
