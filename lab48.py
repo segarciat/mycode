@@ -4,6 +4,7 @@ MAX_GUESTS = 5
 DRINKS = {"COFFEE": 2.00, "TEA": 1.50, "WATER": 1.00, "JUICE": 3.00, "SODA": 2.00}
 
 def welcome():
+    """Welcome message for the user"""
     print("Welcome to Only-Drinks Cafe!")
 
 def prompt_guest_count():
@@ -27,20 +28,22 @@ def prompt_for_drink():
         display_options()
         try:
             option = input("\nWhat would you like? ").upper()
-            for drink in DRINKS:
-                if option == drink or drink.startswith(option):
-                    return drink
         except EOFError:
             print("\nPlease come back!")
             exit()
+        for drink in DRINKS:
+            if option == drink or drink.startswith(option):
+                return drink
 
 def display_options():
+    """Display drink options and price for user"""
     print("These are our drink options: ")
     print("-" * 40)
     for drink, price in DRINKS.items():
         print(f"\t({drink[0]}){drink[1:]:10} - ${price:4.2f}")
 
 def take_orders(number_of_guests):
+    """Prompt user for drink choice. Repeat number_of_guests times"""
     orders = []
     for i in range(number_of_guests):
         drink = prompt_for_drink()
@@ -48,7 +51,8 @@ def take_orders(number_of_guests):
         print(f"Guest {i + 1} wants a {drink}\n")
     return orders
 
-def display_total(orders): 
+def display_total(orders):
+    """Compute total based on user's orders and drink prices."""
     print("-" * 30)
     for n, drink in enumerate(orders):
         print(f"\t{drink:10} (${DRINKS[drink]:5.2f}) for guest {n + 1}")
