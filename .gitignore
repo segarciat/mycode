@@ -1,4 +1,4 @@
-echo "*.log" >> ~/mycode/.gitignore
-echo "*.key" >> ~/mycode/.gitignore
-echo "id_rsa*" >> ~/mycode/.gitignore
+*.log
+*.key
+id_rsa*
 __pycache__
