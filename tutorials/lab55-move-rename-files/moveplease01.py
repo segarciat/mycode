@@ -5,7 +5,7 @@ import os
 
 def main():
     # Change the current working directory.
-    os.chdir('/home/student/mycode')
+    os.chdir('/home/student/mycode/tutorials/lab55-move-rename-files/')
 
     # Move the raynor file to the ceph_storage folder
     shutil.move('raynor.obj', 'ceph_storage/')

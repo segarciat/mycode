@@ -6,7 +6,7 @@ import os
 
 def main():
     # move into the working directory
-    os.chdir("/home/student/mycode/")
+    os.chdir("/home/student/mycode/tutorials/lab51-copy-files-folders/")
     
     # copy the fileA to fileB
     shutil.copy("5g_research/sdn_network.txt", "5g_research/sdn_network.txt.copy")

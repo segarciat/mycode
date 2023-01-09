@@ -1,4 +1,14 @@
 #!/usr/bin/env python3
+"""Author: Sergio Garcia
+Write your own program using if, elif, and else! You can pick from one of the following ideas, or come up with your own!
+
+Requirements:
+    - Return unique answers based on the input provided... multiple results should be possible.
+    - AS BEST YOU'RE ABLE, control for user errors (suggested: methods, try/except, while loop)
+    - Use at least one while loop.
+    - Make all code "your own."
+    - ROUGH minimum of 40 lines of code... if code is spread out across multiple files, they are cumulative.
+"""
 
 MAX_GUESTS = 5
 DRINKS = {"COFFEE": 2.00, "TEA": 1.50, "WATER": 1.00, "JUICE": 3.00, "SODA": 2.00}
@@ -60,7 +70,7 @@ def display_total(orders):
     total = sum(DRINKS[order] for order in orders)
     print(f"Your total is: ${total:6.2f}")
 
-if __name__ == '__main__':
+def main():
     # welcome to diner
     welcome()
     # prompt for number of guests
@@ -72,7 +82,8 @@ if __name__ == '__main__':
 
     orders = take_orders(number_of_guests)
     display_total(orders)
-    print("\nThanks for coming!")
+    print("\nThanks for coming!")    
 
-        
-        
+
+if __name__ == '__main__':
+    main()

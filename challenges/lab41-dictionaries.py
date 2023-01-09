@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Author: Sergio Garcia"""
 
 CHARACTER_QUESTION = "Which character do you want to know about?"
 STAT_QUESTION = "Which statistic do you want to know about?"
@@ -31,16 +32,19 @@ def prompt_user(question, options):
                 return valid_option
 
 def display_char_info(char_name, char_stat):
+    """Display a character's statistic"""
     char_stat_value = MARVELCHARS[char_name][char_stat]
     print(f"{char_name}'s {char_stat} is: {char_stat_value}")
 
 def prompt_again():
+    """Prompt user to see if they wish to continue"""
     while True:
         option = input_graceful("Do you wish to try again? (y/n)").upper()
         if option in {"Y", "N"}:
             return option == "Y"
 
 def input_graceful(message):
+    """Wraps around input to gracefully end the program if user quits early"""
     try:
         user_input = input(message)
         return user_input
@@ -49,6 +53,7 @@ def input_graceful(message):
         exit()
 
 def main():
+    """Displays the statistic for a character of the user's choice"""
     running = True
     while running:
         valid_characters = MARVELCHARS.keys()

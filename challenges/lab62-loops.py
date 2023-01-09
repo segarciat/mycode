@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Author: Sergio Garcia"""
 
 def prompt_farm(valid_names):
     """Indefinitely ask user for a valid farm name"""

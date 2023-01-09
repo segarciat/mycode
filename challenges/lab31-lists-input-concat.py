@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""
-segarciat | Prompt for a number from user
-"""
+"""Author: Sergio Garcia"""
+
 import random
 
 def prompt_for_number(max):

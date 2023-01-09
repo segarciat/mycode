@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
+"""Author: Sergio Garcia"""
 
 import html
 import random
 
 def prompt_user(message, options):
+    """Prompts user to enter one of the given options"""
     while True:
         try:
             user_option = input(message).upper()
@@ -14,6 +16,7 @@ def prompt_user(message, options):
             return user_option
 
 def main():
+    """Unescape HTML to display trivia question, and prompt user for correct answer."""
     trivia= {
              "category": "Entertainment: Film",
              "type": "multiple",

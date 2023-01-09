@@ -1,6 +1,8 @@
 #!/usr/bin/python3
+"""Author: Sergio Garcia"""
 
 def main():
+    """runtime"""
     heroes= ["Spiderman", "Batman", "Black Panther", "Wonder Woman", "Storm"]
     # PART 1
     # Print out your favorite character from this list! The output would look something like:
@@ -26,3 +28,5 @@ def main():
     # then, print out that number!
     print(max(nums))
 
+if __name__ == '__main__':
+    main()

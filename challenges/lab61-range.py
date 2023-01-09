@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Author: Sergio Garcia"""
+
 
 LYRICS = """{0} bottles of beer on the wall!
 {0} bottles of beer on the wall! {0} bottles of beer! You take one down, pass it around!"""
@@ -15,10 +17,15 @@ def get_count():
             print("Please come back again!")
             exit()
 
-def main():
-    n = get_count()
+def sing_from(n):
+    """Sing beer song starting at n"""
     for i in range(n, 0, -1):
         print(LYRICS.format(i))
+
+def main():
+    """Sing the beer song starting at the number provided by the user."""
+    n = get_count()
+    sing_from(n)
 
 if __name__ == '__main__':
     main()
