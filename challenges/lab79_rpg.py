@@ -5,6 +5,15 @@ RPG where a player navigates through scary rooms
 """
 
 import crayons
+import json
+import os
+
+ROOMS_FILE = "rooms.json"
+
+def clear():
+    """Clears the screen."""
+    command = 'cls' if os.name == 'nt' else 'clear'
+    os.system(command)
 
 def display_instructions():
     """Show instructions upon starting the game"""
@@ -22,9 +31,24 @@ def display_instructions():
     \t Careful! If you encounter the monster, you will {crayons.yellow("lose")}!
     ''')
 
+def load_rooms():
+    """Loads the rooms that player can navigate through as a dictionary"""
+    try:
+        with open(ROOMS_FILE, 'r', encoding="utf8") as f:
+            return json.load(f)
+    except json.decoder.JSONDecodeError as e:
+        print("Room file formatting is invalid")
+        print(e)
+    except Exception as e:
+        print("Something went wrong")
+    exit(1)
+
 def main():
     """Drives the game application"""
+    clear()
     display_instructions()
+    rooms = load_rooms()
+    print(rooms)
     won = True
     while not won:
         # Display current room and options
