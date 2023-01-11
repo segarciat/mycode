@@ -54,6 +54,7 @@ def main():
     # index=False prevents the index from our dataframe from
     # being written into the data
     itemsdf.to_excel("pokemonitems.xlsx", index=False)
+    itemsdf.to_json("pokemonitems.json", orient='records')
 
     print("Gotta catch 'em all!")
 
