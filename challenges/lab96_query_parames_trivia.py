@@ -6,14 +6,15 @@ import random
 import crayons
 import os
 import time
+import pprint
 
 # https://opentdb.com/api.php?amount=10&category=25&difficulty=medium&type=multiple
 QUESTIONS_URL = "https://opentdb.com/api.php"
 CATEGORY_URL = "https://opentdb.com/api_category.php"
 NUMBER_OF_QUESTIONS = 3
 VALID_QUESTION_TYPES = {
-        "Multiple Choice": "multiple",
-        "True/False": "boolean"
+    "Multiple Choice": "multiple",
+    "True/False": "boolean"
 }
 
 def clear():
@@ -24,12 +25,13 @@ def pause():
     time.sleep(3)
 
 def get_questions(category_id, difficulty, question_type):
+    print("Loading questions...")
     url = f"{QUESTIONS_URL}?amount={NUMBER_OF_QUESTIONS}"
     if category_id:
         url += f"&category={category_id}"
     if difficulty:
         url += f"&difficulty={difficulty}"
-    if question_type == 'true/false':
+    if question_type:
         url += f"&type={question_type}"
     
     response = requests.get(url)
@@ -38,8 +40,11 @@ def get_questions(category_id, difficulty, question_type):
         exit(1)
 
     data = response.json()
-    if data['response_code'] != 0:
-        print("Database was reached, but something else went wrong")
+    if data['response_code'] == 1:
+        print("Database was reached, but API did not have enough questions")
+        exit(1)
+    elif data['response_code'] != 0:
+        print("Something else went wrong while getting trivia questions...")
         exit(1)
     return data["results"]
 
@@ -54,10 +59,10 @@ def prompt_user(question, choices, alternate=None):
     while True:
         try:
             if alternate:
-                choices_text = '\n'.join([f"({alt}) {choice}" for alt, choice in zip(alternate, choices)])
+                choices_text = '\n'.join([f"({crayons.yellow(alt)}) {choice}" for alt, choice in zip(alternate, choices)])
             else:
                 choices_text = '\n'.join(choices)
-            answer = input(f"{question}{choices_text}\n>").strip()
+            answer = input(f"{crayons.cyan(question)}{choices_text}\n>").strip()
         except EOFError:
             print("Thanks for playing!")
             exit()
@@ -69,26 +74,31 @@ def prompt_user(question, choices, alternate=None):
             return answer
 
 def pose_question(question):
-    if question["type"] == "multiple":
-        correct = html.unescape(question["correct_answer"])
-        choices = [html.unescape(choice) for choice in (correct, *question["incorrect_answers"])]
-        random.shuffle(choices)
+    correct = html.unescape(question["correct_answer"])
+    choices = [html.unescape(choice) for choice in (correct, *question["incorrect_answers"])]
+    random.shuffle(choices)
         
-        alternate = ('A', 'B', 'C', 'D')
-        answer = prompt_user(question["question"] + "\n", choices, alternate)
+    alternate = ('A', 'B', 'C', 'D')
+    question = html.unescape(question["question"])
+    answer = prompt_user(question + "\n", choices, alternate)
 
-        if answer == correct:
-            print(crayons.green("You got it!"))
-        else:
-            correct_letter = alternate[choices.index(correct)]
-            print(crayons.yellow(f"Wrong. The correct answer is {correct_letter}: {correct}"))
+    if answer == correct:
+        print(crayons.green("You got it!"))
+    else:
+        correct_letter = alternate[choices.index(correct)]
+        print(crayons.yellow(f"Wrong. The correct answer is {correct_letter}: {correct}"))
+    return answer == correct
         
 
 def main():
+    """Trivia application"""
+
+    # Customization choices from user.
     valid_categories = get_categories()
     valid_types = ("Multiple Choice", "True/False")
     valid_difficulties = ("Easy", "Medium", "Hard")
 
+    # Prompt user for optional customization
     clear()
     category = prompt_user("What category do you prefer?\n", list(valid_categories.keys()))
     clear()
@@ -96,19 +106,21 @@ def main():
     clear()
     difficulty = prompt_user("What difficulty do you prefer?\n", valid_difficulties).lower()
 
+    # Convert to what API will expect
     category_id = valid_categories.get(category)
     question_type = VALID_QUESTION_TYPES.get(question_type)
 
+    # Get all questions
     questions = get_questions(category_id, difficulty, question_type)
 
+    # Begin trivia, keep track of score.
     score = 0
     for q in questions:
-        clear()
+        #clear()
         got = pose_question(q)
         if got:
             score += 1
-        pause()
-
+        #pause()
     print(f"You got {score} out of {len(questions)} questions correct")
 
 if __name__ == '__main__':
