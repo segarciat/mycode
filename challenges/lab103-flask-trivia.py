@@ -1,5 +1,6 @@
 import html
-import pprint
+import crayons
+import random
 from flask import (
     Flask,
     redirect,
@@ -31,7 +32,6 @@ def login():
     elif request.method == "POST":
         username = request.form.get("username")
         if username in users:
-            print(username)
             return render_template("login.html", username=username)
         else:
             response = make_response(redirect(url_for("trivia")))
@@ -49,21 +49,26 @@ def make_trivia():
         question["choices"] = [html.unescape(choice) for choice in [
             question["correct_answer"], *question["incorrect_answers"]]
         ]
+        random.shuffle(question["choices"])
     return questions
 
 @app.route("/trivia", methods=["POST", "GET"])
 def trivia():
     if not hasattr(request, "cookies") or request.cookies.get("username") not in users:
         return redirect(url_for("login"))
-    print(f"Request method: {request.method}")
+    username = request.cookies.get("username")
+    questions = users[username]["trivia"]
     if request.method == "GET":
-        username = request.cookies.get("username")
-        questions = users[username]["trivia"]
         return render_template("trivia.html", questions=questions, username=username)
     elif request.method == "POST":
-        pprint.pprint(request.form)
-        return "Success!"
-
+        score = 0
+        for q in questions:
+            question = q["question"]
+            correct_answer = q["correct_answer"]
+            user_answer = request.form.get(question)
+            if user_answer == correct_answer:
+                score += 1
+        return f"<h1>{username}, you got {score} questions correct out of {len(questions)}</h1>"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=2224)
