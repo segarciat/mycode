@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{username}}'s Trivia
+</head>
+<body>
+    <form action="/trivia" method="POST">
+        {% for question in questions %}
+            <div>
+                <p>{{question["question"]}}</p>
+                {% for choice in question["choices"] %}
+                <input name="{{question['question']}}" type="radio" value="{{choice}}" required>
+                    {{choice}}
+                </option>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <input type="submit" value="Submit"/>
+    </form>
+    
+
+</body>
+</html>
