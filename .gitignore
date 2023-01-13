@@ -3,3 +3,4 @@
 id_rsa*
 __pycache__
 .env
+inv/
